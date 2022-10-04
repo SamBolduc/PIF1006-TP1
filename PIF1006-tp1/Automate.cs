@@ -64,7 +64,7 @@ namespace PIF1006_tp1
         {
             // Vous devez modifier cette partie de sorte à retourner un équivalent string qui décrit tous les états et
             // la table de transitions de l'automate.
-            return base.ToString();
+            return "Hello automate";
         }
 
         public void Reset() => CurrentState = InitialState;
