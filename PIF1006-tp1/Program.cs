@@ -9,6 +9,7 @@ namespace PIF1006_tp1
     public static class Program
     {
         private static Automate _automate;
+
         private static void Main(string[] args)
         {
             LoadAutomate("./automate.json");
@@ -69,6 +70,8 @@ namespace PIF1006_tp1
             switch (Console.ReadLine())
             {
                 case "1":
+                    Console.WriteLine();
+                    Console.WriteLine("Veuillez entrer le chemin vers votre fichier json");
                     LoadAutomate(Console.ReadLine());
                     return true;
                 case "2":
@@ -92,16 +95,53 @@ namespace PIF1006_tp1
 
         private static void PrintAutomate()
         {
-            Console.WriteLine(_automate.ToString());
-            Console.WriteLine();
-            Console.WriteLine("Appuyez sur une touche pour continuer...");
-            Console.ReadLine();
+            if (!CheckAutomate())
+            {
+                return;
+            }
+
+            SendMessageAndWait(_automate.ToString());
         }
 
         private static void LoadAutomate(string path)
         {
-            var fileContent = File.ReadAllText(path);
-            _automate = JsonConvert.DeserializeObject<Automate>(fileContent);
+            var success = false;
+            try
+            {
+                var fileContent = File.ReadAllText(path);
+                _automate = JsonConvert.DeserializeObject<Automate>(fileContent);
+                if (_automate != null)
+                {
+                    success = true;
+                    SendMessageAndWait("Automate chargée avec succès");
+                }
+            }
+            catch (Exception e)
+            {
+                // ignored
+            }
+
+            if (!success)
+            {
+                SendMessageAndWait("Impossible de charger l'automate...");
+            }
+        }
+
+        private static bool CheckAutomate()
+        {
+            if (_automate != null) return true;
+
+            SendMessageAndWait("Aucun automate est chargé, appuyer sur une touche pour continuer...");
+            return false;
+        }
+
+        private static void SendMessageAndWait() => SendMessageAndWait("");
+
+        private static void SendMessageAndWait(string message)
+        {
+            Console.WriteLine(message);
+            Console.WriteLine("Appuyez sur une touche pour continuer...");
+            Console.ReadLine();
         }
     }
 }
