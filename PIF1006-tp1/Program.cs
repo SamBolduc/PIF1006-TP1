@@ -1,4 +1,5 @@
-﻿namespace PIF1006_tp1
+﻿//Membres de l'équipe: Samuel Bolduc, Alexis Michaud & Benoit Légaré
+namespace PIF1006_tp1
 {
     public static class Program
     {
