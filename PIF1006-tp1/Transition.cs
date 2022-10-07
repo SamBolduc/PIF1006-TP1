@@ -19,7 +19,14 @@ namespace PIF1006_tp1
 
         public override string ToString()
         {
-            return base.ToString();
+            if (TransiteTo == null)
+            {
+                return ", " + Input;
+            }
+            else
+            {
+                return ", " + Input + TransiteTo.Name;
+            }
         }
     }
 }

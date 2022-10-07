@@ -21,7 +21,24 @@ namespace PIF1006_tp1
 
         public override string ToString()
         {
-            return base.ToString();
+            String FullString = "";
+            var Transactions = "";
+
+            if (IsFinal)
+            {
+                FullString = "Final ";
+            }
+            FullString += Name + " ->";
+
+            foreach (var ElementInit in Transitions)
+            {
+                Transactions += ElementInit.ToString();
+            }
+
+            Transactions += "\n";
+            FullString += Transactions.Remove(0, 1);
+
+            return FullString;
         }
     }
 }
