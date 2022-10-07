@@ -2,6 +2,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace PIF1006_tp1
@@ -78,7 +79,9 @@ namespace PIF1006_tp1
                     PrintAutomate();
                     return true;
                 case "3":
-                    SendInput();
+                    Console.WriteLine();
+                    Console.Write("Veuillez entrer une expression constituée uniquement de 0 et 1: ");
+                    SendInput(Console.ReadLine());
                     return true;
                 case "4":
                     Console.WriteLine("Bye !");
@@ -88,9 +91,24 @@ namespace PIF1006_tp1
             }
         }
 
-        private static void SendInput()
+        private static void SendInput(string input)
         {
-            throw new NotImplementedException();
+            if (!input.All(c => c == '0' || c == '1'))
+            {
+                SendMessageAndWait("L'entrée ne doit contenir que des 0 et des 1.");
+                return;
+            }
+
+            if (_automate.Validate(input))
+            {
+                SendMessageAndWait("L'entrée est valide.");
+            }
+            else
+            {
+                SendMessageAndWait("L'entrée n'est pas valide.");
+            }
+
+            return;
         }
 
         private static void PrintAutomate()

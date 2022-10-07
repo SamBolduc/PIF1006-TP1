@@ -49,6 +49,21 @@ namespace PIF1006_tp1
             var isValid = true;
             Reset();
 
+            for(int i = 0; i < input.Length; i++)
+            {
+                char c = input[i];
+
+                Transition nextTrans = CurrentState.Transitions.First(trans => trans.Input == c);
+
+                if (nextTrans != null)
+                    CurrentState = nextTrans.TransiteTo ?? CurrentState;
+                else
+                    return false;
+
+                if (i == input.Length - 1 && !CurrentState.IsFinal)
+                    return false;
+            }
+
             // Vous devez transformer l'input en une liste / un tableau de caractères (char) et les lire un par un;
             // L'automate doit maintenant à jour son "CurrentState" en suivant les transitions et en respectant l'input.
             // Considérez que l'automate est déterministe et que même si dans les faits on aurait pu mettre plusieurs
