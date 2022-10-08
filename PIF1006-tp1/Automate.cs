@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PIF1006_tp1
 {
@@ -15,6 +13,10 @@ namespace PIF1006_tp1
         {
             InitialState = initialState;
             Reset();
+        }
+
+        public Automate()
+        {
         }
 
         public void LoadFromFile(string filePath)
@@ -49,7 +51,7 @@ namespace PIF1006_tp1
             var isValid = true;
             Reset();
 
-            for(int i = 0; i < input.Length; i++)
+            for (int i = 0; i < input.Length; i++)
             {
                 char c = input[i];
 

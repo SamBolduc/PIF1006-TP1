@@ -1,34 +1,54 @@
 {
-    "InitialState":{
-        "IsFinal":false,
-        "Name":"s0",
-        "Transitions":[
+    "$id": "1",
+    "InitialState": {
+        "$id": "2",
+        "IsFinal": false,
+        "Name": "s0",
+        "Transitions": [
             {
-                "Input":"0",
-                "TransiteTo":{
-                    "IsFinal":false,
-                    "Name":"s1",
-                    "Transitions":[
+                "$id": "3",
+                "Input": "0",
+                "TransiteTo": {
+                    "$id": "4",
+                    "IsFinal": false,
+                    "Name": "s1",
+                    "Transitions": [
                         {
-                            "Input":"0"
+                            "$id": "5",
+                            "Input": "0",
+                            "TransiteTo": {
+                                "$ref": "2"
+                            }
                         },
                         {
-                            "Input":"1",
-                            "TransiteTo":{
-                                "IsFinal":true,
-                                "Name":"s2",
-                                "Transitions":[
+                            "$id": "6",
+                            "Input": "1",
+                            "TransiteTo": {
+                                "$id": "7",
+                                "IsFinal": true,
+                                "Name": "s2",
+                                "Transitions": [
                                     {
-                                        "Input":"1"
+                                        "$id": "8",
+                                        "Input": "1",
+                                        "TransiteTo": {
+                                            "$ref": "7"
+                                        }
                                     },
                                     {
-                                        "Input":"0",
-                                        "TransiteTo":{
-                                            "IsFinal":false,
-                                            "Name":"s3",
-                                            "Transitions":[
+                                        "$id": "9",
+                                        "Input": "0",
+                                        "TransiteTo": {
+                                            "$id": "10",
+                                            "IsFinal": false,
+                                            "Name": "s3",
+                                            "Transitions": [
                                                 {
-                                                    "Input":"1"
+                                                    "$id": "11",
+                                                    "Input": "1",
+                                                    "TransiteTo": {
+                                                        "$ref": "4"
+                                                    }
                                                 }
                                             ]
                                         }
@@ -41,46 +61,7 @@
             }
         ]
     },
-    "CurrentState":{
-        "IsFinal":false,
-        "Name":"s0",
-        "Transitions":[
-            {
-                "Input":"0",
-                "TransiteTo":{
-                    "IsFinal":false,
-                    "Name":"s1",
-                    "Transitions":[
-                        {
-                            "Input":"0"
-                        },
-                        {
-                            "Input":"1",
-                            "TransiteTo":{
-                                "IsFinal":true,
-                                "Name":"s2",
-                                "Transitions":[
-                                    {
-                                        "Input":"1"
-                                    },
-                                    {
-                                        "Input":"0",
-                                        "TransiteTo":{
-                                            "IsFinal":false,
-                                            "Name":"s3",
-                                            "Transitions":[
-                                                {
-                                                    "Input":"1"
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        ]
+    "CurrentState": {
+        "$ref": "2"
     }
 }

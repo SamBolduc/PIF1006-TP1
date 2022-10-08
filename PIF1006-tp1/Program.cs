@@ -34,14 +34,15 @@ namespace PIF1006_tp1
             //
             // // Dans cet exemple uniquement, on permet au constructuer d'accueilir un état initial
             // // (qui par référence "transporte" tout l'automate en soi)
-            // var automate = new Automate(s0);
             //
             //
             // // Décommenter pour avoir le json d'un automate en output.
-            // // Console.WriteLine(JsonConvert.SerializeObject(automate, new JsonSerializerSettings()
-            // // {
-            // //     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            // // }));
+            // var automate = new Automate(s0);
+            // Console.WriteLine(JsonConvert.SerializeObject(_automate, new JsonSerializerSettings()
+            // {
+            //     ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+            //     PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            // }));
             //
             // // On doit pouvoir ensuite appeler une méthode qui permet de valider un input ou non
             // var isValid = automate.Validate("011000");
@@ -127,7 +128,12 @@ namespace PIF1006_tp1
             try
             {
                 var fileContent = File.ReadAllText(path);
-                _automate = JsonConvert.DeserializeObject<Automate>(fileContent);
+                _automate = JsonConvert.DeserializeObject<Automate>(fileContent, new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
+                });
+                
                 if (_automate != null)
                 {
                     success = true;
