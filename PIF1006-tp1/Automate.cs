@@ -55,7 +55,7 @@ namespace PIF1006_tp1
             {
                 char c = input[i];
 
-                Transition nextTrans = CurrentState.Transitions.First(trans => trans.Input == c);
+                Transition nextTrans = CurrentState.Transitions.FirstOrDefault(trans => trans.Input == c);
 
                 if (nextTrans != null)
                     CurrentState = nextTrans.TransiteTo ?? CurrentState;
