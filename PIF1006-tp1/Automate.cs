@@ -80,23 +80,24 @@ namespace PIF1006_tp1
         public override string ToString()
         {
             String fullInfo = "";
-            fullInfo = InitialState.ToString() + allState(InitialState.Transitions);
+            fullInfo = InitialState.ToString() + allState(InitialState.Transitions, InitialState.Name);
 
             // Vous devez modifier cette partie de sorte à retourner un équivalent string qui décrit tous les états et
             // la table de transitions de l'automate.
             return fullInfo;
         }
 
-        public String allState(List<Transition> Transitions)
+        public String allState(List<Transition> Transitions,String alreadyPrint)
         {
             String allInfoState = "";
 
             foreach (var element in Transitions)
             {
-                if (element.TransiteTo != null)
+                if (element.TransiteTo != null && !alreadyPrint.Contains(element.TransiteTo.Name))
                 {
                     allInfoState += element.TransiteTo.ToString();
-                    allInfoState += allState(element.TransiteTo.Transitions);
+                    alreadyPrint += element.TransiteTo.Name;
+                    allInfoState += allState(element.TransiteTo.Transitions, alreadyPrint);
                 }
             }
 
