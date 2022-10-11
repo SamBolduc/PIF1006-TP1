@@ -1,9 +1,9 @@
 ﻿//Membres de l'équipe: Samuel Bolduc, Alexis Michaud & Benoit Légaré
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace PIF1006_tp1
 {
@@ -13,7 +13,7 @@ namespace PIF1006_tp1
 
         private static void Main(string[] args)
         {
-            LoadAutomate("./automate.json");
+            LoadFromFile("./automate.txt");
             var showMenu = true;
             while (showMenu)
             {
@@ -73,8 +73,8 @@ namespace PIF1006_tp1
             {
                 case "1":
                     Console.WriteLine();
-                    Console.WriteLine("Veuillez entrer le chemin vers votre fichier json");
-                    LoadAutomate(Console.ReadLine());
+                    Console.WriteLine("Veuillez entrer le chemin vers votre fichier txt");
+                    LoadFromFile(Console.ReadLine());
                     return true;
                 case "2":
                     PrintAutomate();
@@ -122,33 +122,86 @@ namespace PIF1006_tp1
             SendMessageAndWait(_automate.ToString());
         }
 
-        private static void LoadAutomate(string path)
+        private static void LoadFromFile(string filePath)
         {
-            var success = false;
-            try
-            {
-                var fileContent = File.ReadAllText(path);
-                _automate = JsonConvert.DeserializeObject<Automate>(fileContent, new JsonSerializerSettings()
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects
-                });
-                
-                if (_automate != null)
-                {
-                    success = true;
-                    SendMessageAndWait("Automate chargée avec succès");
-                }
-            }
-            catch (Exception e)
-            {
-                // ignored
-            }
-
-            if (!success)
+            if (!File.Exists(filePath))
             {
                 SendMessageAndWait("Impossible de charger l'automate...");
             }
+
+            var states = new List<State>();
+
+            foreach (var line in File.ReadLines(filePath))
+            {
+                var trim = line.ToLower();
+                var args = trim.Split(" ");
+                if (trim.StartsWith("state"))
+                {
+                    var name = args[1];
+                    var finalArg = args[2];
+                    var isFinal = AsBool(finalArg);
+
+                    if (args.Length != 3 || isFinal == null || string.IsNullOrWhiteSpace(name) ||
+                        string.IsNullOrWhiteSpace(finalArg) ||
+                        states.Any(x => x.Name.ToLower().Equals(name.ToLower())))
+                    {
+                        SendMessageAndWait($"La ligne '{line}' est invalide et a été ignorée.");
+                        continue;
+                    }
+
+                    var state = new State(name, isFinal.Value);
+                    states.Add(state);
+
+                    if (states.Count == 1)
+                    {
+                        _automate = new Automate(state);
+                    }
+                }
+                else if (trim.StartsWith("transition"))
+                {
+                    var sourceStateArg = args[1];
+                    var input = args[2];
+                    var targetStateArg = args[3];
+                    var sourceState = states.FirstOrDefault(x => x.Name.ToLower().Equals(sourceStateArg.ToLower()));
+                    var targetState = states.FirstOrDefault(x => x.Name.ToLower().Equals(targetStateArg.ToLower()));
+
+                    if (args.Length != 4 || input.Length != 1 || (!input.StartsWith("1") && !input.StartsWith("0")) ||
+                        sourceState == null || targetState == null)
+                    {
+                        SendMessageAndWait($"La ligne '{line}' est invalide et a été ignorée.");
+                        continue;
+                    }
+
+                    var transition = new Transition(input[0], targetState);
+                    sourceState.Transitions.Add(transition);
+                }
+                else
+                {
+                    SendMessageAndWait($"La ligne '{line}' est invalide et a été ignorée.");
+                }
+            }
+
+            SendMessageAndWait("Fin du chargement de l'automate...");
+        }
+
+        private static bool? AsBool(string arg)
+        {
+            if (arg == null)
+            {
+                return null;
+            }
+
+            if (arg.Equals("1"))
+            {
+                return true;
+            }
+
+            if (arg.Equals("0"))
+            {
+                return false;
+            }
+
+            return null;
         }
 
         private static bool CheckAutomate()
