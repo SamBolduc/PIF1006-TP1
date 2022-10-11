@@ -2,17 +2,13 @@
 {
     public class Transition
     {
-        public char Input { get; set; }
-        public State TransiteTo { get; set; }
+        public char Input { get; }
+        public State TransiteTo { get; }
 
         public Transition(char input, State transiteTo)
         {
             Input = input;
             TransiteTo = transiteTo;
-        }
-
-        public Transition()
-        {
         }
 
         public override string ToString()
@@ -21,10 +17,8 @@
             {
                 return ", " + Input;
             }
-            else
-            {
-                return ", " + Input + TransiteTo.Name;
-            }
+
+            return ", " + Input + TransiteTo.Name;
         }
     }
 }

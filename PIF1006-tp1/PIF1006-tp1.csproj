@@ -11,9 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="automate.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="automate.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

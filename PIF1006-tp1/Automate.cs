@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace PIF1006_tp1
 {
     public class Automate
     {
-        public State InitialState { get; set; }
-        public State CurrentState { get; set; }
+        private State InitialState { get; }
+        private State CurrentState { get; set; }
 
         public Automate(State initialState)
         {
@@ -16,20 +14,15 @@ namespace PIF1006_tp1
             Reset();
         }
 
-        public Automate()
-        {
-        }
-
         public bool Validate(string input)
         {
-            var isValid = true;
             Reset();
 
-            for (int i = 0; i < input.Length; i++)
+            for (var i = 0; i < input.Length; i++)
             {
-                char c = input[i];
+                var c = input[i];
 
-                Transition nextTrans = CurrentState.Transitions.FirstOrDefault(trans => trans.Input == c);
+                var nextTrans = CurrentState.Transitions.FirstOrDefault(trans => trans.Input == c);
 
                 if (nextTrans != null)
                     CurrentState = nextTrans.TransiteTo ?? CurrentState;
@@ -40,44 +33,30 @@ namespace PIF1006_tp1
                     return false;
             }
 
-            // Vous devez transformer l'input en une liste / un tableau de caractères (char) et les lire un par un;
-            // L'automate doit maintenant à jour son "CurrentState" en suivant les transitions et en respectant l'input.
-            // Considérez que l'automate est déterministe et que même si dans les faits on aurait pu mettre plusieurs
-            // transitions possibles pour un état et un input donné, le 1er trouvé dans la liste est le chemin emprunté.
-            // Si aucune transition n'est trouvé pour un état courant et l'input donné, cela doit retourner faux;
-            // Si tous les caractères ont été pris en compte, on vérifie si l'état courant est final ou non et on retourne
-            // vrai ou faux selon.
-
-            return isValid;
+            return true;
         }
 
         public override string ToString()
         {
-            String fullInfo = "";
-            fullInfo = InitialState.ToString() + allState(InitialState.Transitions, InitialState.Name);
-
-            // Vous devez modifier cette partie de sorte à retourner un équivalent string qui décrit tous les états et
-            // la table de transitions de l'automate.
-            return fullInfo;
+            return InitialState + AllState(InitialState.Transitions, InitialState.Name);
         }
 
-        public String allState(List<Transition> Transitions, String alreadyPrint)
+        private string AllState(List<Transition> transitions, string alreadyPrint)
         {
-            String allInfoState = "";
+            var allInfoState = "";
 
-            foreach (var element in Transitions)
+            foreach (var element in transitions)
             {
-                if (element.TransiteTo != null && !alreadyPrint.Contains(element.TransiteTo.Name))
-                {
-                    allInfoState += element.TransiteTo.ToString();
-                    alreadyPrint += element.TransiteTo.Name;
-                    allInfoState += allState(element.TransiteTo.Transitions, alreadyPrint);
-                }
+                if (element.TransiteTo == null || alreadyPrint.Contains(element.TransiteTo.Name)) continue;
+
+                allInfoState += element.TransiteTo.ToString();
+                alreadyPrint += element.TransiteTo.Name;
+                allInfoState += AllState(element.TransiteTo.Transitions, alreadyPrint);
             }
 
             return allInfoState;
         }
 
-        public void Reset() => CurrentState = InitialState;
+        private void Reset() => CurrentState = InitialState;
     }
 }

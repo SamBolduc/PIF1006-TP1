@@ -5,9 +5,9 @@ namespace PIF1006_tp1
 {
     public class State
     {
-        public bool IsFinal { get; set; }
-        public string Name { get; set; }
-        public List<Transition> Transitions { get; set; }
+        public bool IsFinal { get; }
+        public string Name { get; }
+        public List<Transition> Transitions { get; }
 
         public State(string name, bool isFinal)
         {
@@ -16,29 +16,27 @@ namespace PIF1006_tp1
             Transitions = new List<Transition>();
         }
 
-        public State(){}
-
         public override string ToString()
         {
-            String FullString = "";
-            var Transactions = "";
+            var fullString = "";
+            var transactions = "";
 
             if (IsFinal)
             {
-                FullString = "Final ";
+                fullString = "Final ";
             }
 
-            FullString += Name + " ->";
+            fullString += Name + " ->";
 
-            foreach (var ElementInit in Transitions)
+            foreach (var elementInit in Transitions)
             {
-                Transactions += ElementInit.ToString();
+                transactions += elementInit.ToString();
             }
 
-            Transactions += "\n";
-            FullString += Transactions.Remove(0, 1);
+            transactions += "\n";
+            fullString += transactions.Remove(0, 1);
 
-            return FullString;
+            return fullString;
         }
     }
 }
