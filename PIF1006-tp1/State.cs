@@ -21,10 +21,6 @@ namespace PIF1006_tp1
             var fullString = "";
             var transactions = "";
 
-            if (IsFinal)
-            {
-                fullString = "Final ";
-            }
 
             fullString += Name + " ->";
 

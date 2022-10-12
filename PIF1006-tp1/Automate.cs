@@ -38,7 +38,14 @@ namespace PIF1006_tp1
 
         public override string ToString()
         {
-            return InitialState + AllState(InitialState.Transitions, InitialState.Name);
+            if (InitialState.IsFinal)
+            {
+                return  InitialState.ToString().Insert(5, " ε, ") + AllState(InitialState.Transitions, InitialState.Name);
+            }
+            else {
+                return InitialState + AllState(InitialState.Transitions, InitialState.Name);
+            }
+
         }
 
         private string AllState(List<Transition> transitions, string alreadyPrint)
@@ -47,11 +54,14 @@ namespace PIF1006_tp1
 
             foreach (var element in transitions)
             {
-                if (element.TransiteTo == null || alreadyPrint.Contains(element.TransiteTo.Name)) continue;
 
-                allInfoState += element.TransiteTo.ToString();
-                alreadyPrint += element.TransiteTo.Name;
-                allInfoState += AllState(element.TransiteTo.Transitions, alreadyPrint);
+                if (!alreadyPrint.Contains(element.TransiteTo.Name + " ->") && element.TransiteTo.Name != "s0")
+                {
+                    allInfoState += element.TransiteTo.ToString();
+                    alreadyPrint += allInfoState;
+                    allInfoState += AllState(element.TransiteTo.Transitions, alreadyPrint);
+                    alreadyPrint += allInfoState;
+                }
             }
 
             return allInfoState;

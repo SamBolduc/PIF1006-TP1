@@ -13,12 +13,20 @@
 
         public override string ToString()
         {
-            if (TransiteTo == null)
+            if (TransiteTo != null)
             {
-                return ", " + Input;
+                if (TransiteTo.IsFinal)
+                {
+                    return ", " + Input + ", " + Input + TransiteTo.Name;
+                }
+                else {
+                    return ", " + Input + TransiteTo.Name;
+                }
+            } else
+            {
+                return " ";
             }
 
-            return ", " + Input + TransiteTo.Name;
         }
     }
 }
