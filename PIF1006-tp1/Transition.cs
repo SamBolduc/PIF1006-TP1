@@ -1,5 +1,6 @@
 ﻿namespace PIF1006_tp1
 {
+    //Classe représentant les transitions entre les états
     public class Transition
     {
         public char Input { get; }
@@ -11,8 +12,10 @@
             TransiteTo = transiteTo;
         }
 
+        //Retourne les informations de la transition dépandamment si l'état est final ou pas
         public override string ToString()
         {
+
             if (TransiteTo != null)
             {
                 if (TransiteTo.IsFinal)

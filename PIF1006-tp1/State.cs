@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace PIF1006_tp1
 {
+    //Classe représentant les états d'un automate
     public class State
     {
         public bool IsFinal { get; }
@@ -16,8 +17,10 @@ namespace PIF1006_tp1
             Transitions = new List<Transition>();
         }
 
+        //Retourne les informations de l'état et de ses transitions
         public override string ToString()
         {
+            
             var fullString = "";
             var transactions = "";
 

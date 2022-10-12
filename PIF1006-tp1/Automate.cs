@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace PIF1006_tp1
 {
+    //Classe représentant un automate composé de plusieurs états ayant chacun leurs transitions
     public class Automate
     {
         private State InitialState { get; }
@@ -14,6 +15,7 @@ namespace PIF1006_tp1
             Reset();
         }
 
+        //Retourne si la chaine est valide ou non
         public bool Validate(string input)
         {
             Reset();
@@ -36,8 +38,10 @@ namespace PIF1006_tp1
             return true;
         }
 
+        //Retourne les informations complète de l'automate. Elle renvoie une grammaire régulière représentant l'automate
         public override string ToString()
         {
+
             if (InitialState.IsFinal)
             {
                 return  InitialState.ToString().Insert(5, " ε, ") + AllState(InitialState.Transitions, InitialState.Name);
@@ -48,8 +52,10 @@ namespace PIF1006_tp1
 
         }
 
+        //Fonction récursive servant à aller chercher tous les états et leurs transitions
         private string AllState(List<Transition> transitions, string alreadyPrint)
         {
+            
             var allInfoState = "";
 
             foreach (var element in transitions)

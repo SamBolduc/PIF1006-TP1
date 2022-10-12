@@ -55,6 +55,8 @@ namespace PIF1006_tp1
             }
         }
 
+
+        //Envoie une chaine à valider
         private static void SendInput(string input)
         {
             if (!input.All(c => c == '0' || c == '1'))
@@ -73,6 +75,7 @@ namespace PIF1006_tp1
             }
         }
 
+        //Affiche l'automate
         private static void PrintAutomate()
         {
             if (!CheckAutomate())
@@ -83,6 +86,7 @@ namespace PIF1006_tp1
             SendMessageAndWait(_automate.ToString());
         }
 
+        //Load l'automate à partir d'un fichier
         private static void LoadFromFile(string filePath)
         {
             if (!File.Exists(filePath))
@@ -165,6 +169,8 @@ namespace PIF1006_tp1
             return null;
         }
 
+
+        //Regarde si l'automate est chargé
         private static bool CheckAutomate()
         {
             if (_automate != null) return true;
