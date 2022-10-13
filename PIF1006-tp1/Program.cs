@@ -16,12 +16,15 @@ namespace PIF1006_tp1
             LoadFromFile("./automate.txt");
 
             var showMenu = true;
+
+            //On affiche le menu principal aussi longtemps qu'on a pas sélectionné l'option de quitter (4)
             while (showMenu)
             {
                 showMenu = MainMenu();
             }
         }
 
+        //Affichage du menu principal.
         private static bool MainMenu()
         {
             Console.Clear();
@@ -89,6 +92,7 @@ namespace PIF1006_tp1
         //Load l'automate à partir d'un fichier
         private static void LoadFromFile(string filePath)
         {
+            //On vérifie que le fichier existe
             if (!File.Exists(filePath))
             {
                 SendMessageAndWait("Impossible de charger l'automate...");
@@ -96,16 +100,20 @@ namespace PIF1006_tp1
 
             var states = new List<State>();
 
+            //Lecture des lignes du fichiers, une ligne a la fois.
             foreach (var line in File.ReadLines(filePath))
             {
-                var trim = line.ToLower();
-                var args = trim.Split(" ");
+                var trim = line.ToLower().Trim(); //Uniformise la ligne
+                var args = trim.Split(" "); //On split avec les espace pour avoir les diffents arguments
+
+                //La commande est de type "state"
                 if (trim.StartsWith("state") && args.Length == 3)
                 {
                     var name = args[1];
                     var finalArg = args[2];
                     var isFinal = AsBool(finalArg);
 
+                    //Validations de la ligne
                     if (isFinal == null || string.IsNullOrWhiteSpace(name) ||
                         string.IsNullOrWhiteSpace(finalArg) ||
                         states.Any(x => x.Name.ToLower().Equals(name.ToLower())))
@@ -117,12 +125,12 @@ namespace PIF1006_tp1
                     var state = new State(name, isFinal.Value);
                     states.Add(state);
 
-                    if (states.Count == 1)
+                    if (states.Count == 1) //Le premier state du fichier est le state initial
                     {
                         _automate = new Automate(state);
                     }
                 }
-                else if (trim.StartsWith("transition") && args.Length == 4)
+                else if (trim.StartsWith("transition") && args.Length == 4) //La commande est de type "transition"
                 {
                     var sourceStateArg = args[1];
                     var input = args[2];
@@ -130,6 +138,7 @@ namespace PIF1006_tp1
                     var sourceState = states.FirstOrDefault(x => x.Name.ToLower().Equals(sourceStateArg.ToLower()));
                     var targetState = states.FirstOrDefault(x => x.Name.ToLower().Equals(targetStateArg.ToLower()));
 
+                    //Validations de la ligne
                     if (input.Length != 1 || (!input.StartsWith("1") && !input.StartsWith("0")) ||
                         sourceState == null || targetState == null)
                     {
@@ -142,13 +151,14 @@ namespace PIF1006_tp1
                 }
                 else
                 {
-                    SendMessageAndWait($"La ligne '{line}' est invalide et a été ignorée.");
+                    SendMessageAndWait($"La ligne '{line}' est invalide et a été ignorée."); //La commande est invalide
                 }
             }
 
             SendMessageAndWait("Fin du chargement de l'automate...");
         }
 
+        //Transforme un string en bool. 1 = true, 0 = false, sinon null
         private static bool? AsBool(string arg)
         {
             if (arg == null)
