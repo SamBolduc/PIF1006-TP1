@@ -189,6 +189,7 @@ namespace PIF1006_tp1
             return false;
         }
 
+        // Méthode utilitaire complémentaire (réutilisation de code)
         private static void SendMessageAndWait(string message)
         {
             Console.WriteLine(message);

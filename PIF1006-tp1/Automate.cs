@@ -20,7 +20,8 @@ namespace PIF1006_tp1
         {
             Reset();
 
-            if(input.Length == 0 && !CurrentState.IsFinal)
+            // Si le premier état n'est pas final et qu'il n'y a aucun input(entrée vide 'ε'), alors la validation est fausse
+            if (input.Length == 0 && !CurrentState.IsFinal)
             {
                 return false;
             }
@@ -29,13 +30,17 @@ namespace PIF1006_tp1
             {
                 var c = input[i];
 
+                // Trouver la prochaine(première, si non-déterministe) transition qui correspond au input (c) courant
                 var nextTrans = CurrentState.Transitions.FirstOrDefault(trans => trans.Input == c);
 
+                // Si on trouve une prochaine transition, alors on met à jour le CurrentState.
                 if (nextTrans != null)
+                    // Si la transition ne contient pas de TransiteTo, c'est que l'on transite sur le même état (boucle)
                     CurrentState = nextTrans.TransiteTo ?? CurrentState;
                 else
                     return false;
 
+                // Si nous avons épuiser l'input et que le CurrentState n'est pas final, alors l'input est invalide
                 if (i == input.Length - 1 && !CurrentState.IsFinal)
                     return false;
             }
@@ -65,7 +70,7 @@ namespace PIF1006_tp1
 
             foreach (var element in transitions)
             {
-
+                // Vérifie si l'état et ses transitions n'ont pas déjà été écrite dans la console
                 if (!alreadyPrint.Contains(element.TransiteTo.Name + " ->") && element.TransiteTo.Name != "s0")
                 {
                     allInfoState += element.TransiteTo.ToString();
