@@ -20,6 +20,11 @@ namespace PIF1006_tp1
         {
             Reset();
 
+            if(input.Length == 0 && !CurrentState.IsFinal)
+            {
+                return false;
+            }
+
             for (var i = 0; i < input.Length; i++)
             {
                 var c = input[i];

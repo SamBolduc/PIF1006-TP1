@@ -64,7 +64,7 @@ namespace PIF1006_tp1
         {
             if (!input.All(c => c == '0' || c == '1'))
             {
-                SendMessageAndWait("L'entrée ne doit contenir que des 0 et des 1.");
+                SendMessageAndWait("Invalide: l'entrée ne doit contenir que des 0 et des 1.");
                 return;
             }
 
