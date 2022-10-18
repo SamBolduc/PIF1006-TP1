@@ -20,10 +20,10 @@
             {
                 if (TransiteTo.IsFinal)
                 {
-                    return ", " + Input + ", " + Input + TransiteTo.Name;
+                    return ", " + Input + ", " + TransiteTo.Name + "(" + Input + ")";
                 }
                 else {
-                    return ", " + Input + TransiteTo.Name;
+                    return ", " + TransiteTo.Name + "(" + Input+")";
                 }
             } else
             {
