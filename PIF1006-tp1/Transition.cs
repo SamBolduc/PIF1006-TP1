@@ -18,13 +18,7 @@
 
             if (TransiteTo != null)
             {
-                if (TransiteTo.IsFinal)
-                {
-                    return ", " + Input + ", " + TransiteTo.Name + "(" + Input + ")";
-                }
-                else {
-                    return ", " + TransiteTo.Name + "(" + Input+")";
-                }
+                return ", " + TransiteTo.Name + "(" + Input+")";
             } else
             {
                 return " ";

@@ -54,10 +54,10 @@ namespace PIF1006_tp1
 
             if (InitialState.IsFinal)
             {
-                return  InitialState.ToString().Insert(5, " ε, ") + AllState(InitialState.Transitions, InitialState.Name);
+                return InitialState.Name + "(F)" + AllStateName(InitialState.Transitions, InitialState.Name) + "\n\n" + InitialState.ToString().Insert(5, " ε, ") + AllState(InitialState.Transitions, InitialState.Name);
             }
             else {
-                return InitialState + AllState(InitialState.Transitions, InitialState.Name);
+                return InitialState.Name + AllStateName(InitialState.Transitions, InitialState.Name) + "\n\n" + InitialState + AllState(InitialState.Transitions, InitialState.Name);
             }
 
         }
@@ -70,12 +70,40 @@ namespace PIF1006_tp1
 
             foreach (var element in transitions)
             {
-                // Vérifie si l'état et ses transitions n'ont pas déjà été écrite dans la console
+                // Vérifie si l'état et ses transitions n'ont pas déjà été ajouté dans la variable à print
                 if (!alreadyPrint.Contains(element.TransiteTo.Name + " ->") && element.TransiteTo.Name != "s0")
                 {
                     allInfoState += element.TransiteTo.ToString();
                     alreadyPrint += allInfoState;
                     allInfoState += AllState(element.TransiteTo.Transitions, alreadyPrint);
+                    alreadyPrint += allInfoState;
+                }
+            }
+
+            return allInfoState;
+        }
+
+        //Fonction récursive servant à aller chercher tous les états et s'ils sont finaux ou pas
+        private string AllStateName(List<Transition> transitions, string alreadyPrint)
+        {
+
+            var allInfoState = "";
+
+            foreach (var element in transitions)
+            {
+                // Vérifie si l'état n'a pas déjà été ajouté dans la variable à print
+                if (!alreadyPrint.Contains(element.TransiteTo.Name) && element.TransiteTo.Name != "s0")
+                {
+                    if (element.TransiteTo.IsFinal)
+                    {
+                        allInfoState += ", " + element.TransiteTo.Name+"(F)";
+                    }
+                    else {
+                        allInfoState += ", " + element.TransiteTo.Name;
+                    }
+
+                    alreadyPrint += allInfoState;
+                    allInfoState += AllStateName(element.TransiteTo.Transitions, alreadyPrint);
                     alreadyPrint += allInfoState;
                 }
             }
